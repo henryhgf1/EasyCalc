@@ -1,6 +1,9 @@
 const display = document.getElementById("display");
 const buttons = document.querySelectorAll("button");
 
+function isErrorState() {
+  return display.value === "Erro";
+}
 buttons.forEach((button) => {
   button.addEventListener("click", () => {
     const value = button.textContent;
@@ -16,6 +19,7 @@ buttons.forEach((button) => {
     } else if (value === "⌫") {
       display.value = display.value.slice(0, -1);
     } else {
+      if (isErrorState()) display.value = "";
       display.value += value;
     }
   });
@@ -35,6 +39,7 @@ document.addEventListener("keydown", (event) => {
   } else if (key === " ") {
     display.value = "";
   } else if (!isNaN(key) || "+-*/.=".includes(key)) {
+    if (isErrorState()) display.value = "";
     display.value += key;
   }
 });
