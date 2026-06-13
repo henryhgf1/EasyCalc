@@ -18,6 +18,14 @@ buttons.forEach((button) => {
       }
     } else if (value === "⌫") {
       display.value = display.value.slice(0, -1);
+    } else if (value === "%") {
+      if (isErrorState(display.value)) return;
+      const match = display.value.match(/(\d+\.?\d*)$/);
+      if (match) {
+        const lastNum = parseFloat(match[1]);
+        display.value =
+          display.value.slice(0, -match[1].length) + lastNum / 100;
+      }
     } else {
       if (isErrorState(display.value)) display.value = "";
 
@@ -57,7 +65,7 @@ document.addEventListener("keydown", (event) => {
     display.value = display.value.slice(0, -1);
   } else if (key === " ") {
     display.value = "";
-  } else if (!isNaN(key) || "+-*/.=".includes(key)) {
+  } else if (!isNaN(key) || "+-*/.=%".includes(key)) {
     if (isErrorState(display.value)) display.value = "";
 
     if ("+-*/".includes(key)) {
@@ -73,6 +81,14 @@ document.addEventListener("keydown", (event) => {
       if (display.value === "") {
         display.value = "0.";
         return;
+      }
+    } else if (key === "%") {
+      if (isErrorState(display.value)) return;
+      const match = display.value.match(/(\d+\.?\d*)$/);
+      if (match) {
+        const lastNum = parseFloat(match[1]);
+        display.value =
+          display.value.slice(0, -match[1].length) + lastNum / 100;
       }
     }
     display.value += key;
