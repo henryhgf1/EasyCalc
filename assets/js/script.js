@@ -4,6 +4,22 @@ const buttons = document.querySelectorAll("button");
 function isErrorState() {
   return display.value === "Erro";
 }
+function lastChar() {
+  return display.value.slice(-1);
+}
+
+function canAddOperator(value) {
+  if (isErrorState()) return true;
+  if (display.value === "") return value === "-";
+  return !"+-*/".includes(lastChar());
+}
+
+function canAddDot() {
+  if (isErrorState()) return true;
+  const parts = display.value.split(/[+\-*/]/);
+  const lastNum = parts[parts.length - 1];
+  return !lastNum.includes(".");
+}
 buttons.forEach((button) => {
   button.addEventListener("click", () => {
     const value = button.textContent;
@@ -20,6 +36,16 @@ buttons.forEach((button) => {
       display.value = display.value.slice(0, -1);
     } else {
       if (isErrorState()) display.value = "";
+
+      if ("+-*/".includes(value)) {
+        if (!canAddOperator(value)) return;
+      } else if (value === ".") {
+        if (!canAddDot()) return;
+        if (display.value === "") {
+          display.value = "0.";
+          return;
+        }
+      }
       display.value += value;
     }
   });
@@ -40,6 +66,16 @@ document.addEventListener("keydown", (event) => {
     display.value = "";
   } else if (!isNaN(key) || "+-*/.=".includes(key)) {
     if (isErrorState()) display.value = "";
+
+    if ("+-*/".includes(key)) {
+      if (!canAddOperator(key)) return;
+    } else if (key === ".") {
+      if (!canAddDot()) return;
+      if (display.value === "") {
+        display.value = "0.";
+        return;
+      }
+    }
     display.value += key;
   }
 });
