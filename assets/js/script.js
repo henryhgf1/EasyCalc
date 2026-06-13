@@ -21,3 +21,22 @@ buttons.forEach((button) => {
     }
   });
 });
+
+document.addEventListener("keydown", (event) => {
+  const key = event.key;
+
+  if (!isNaN(key) || "+-*/.".includes(key))
+    if (key === "Enter") {
+      try {
+        display.value = eval(display.value);
+      } catch {
+        display.value = "Erro";
+      }
+    } else if (key === "Backspace") {
+      display.value = display.value.slice(0, -1);
+    } else if (key === " ") {
+      display.value = "";
+    } else {
+      display.value += key;
+    }
+});
