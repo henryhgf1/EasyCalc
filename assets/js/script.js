@@ -1,8 +1,9 @@
 const display = document.getElementById("display");
 const buttons = document.querySelectorAll("button");
 
+const ERROR_MESSAGES = ["Erro", "Divisão por zero", "Erro de sintaxe"];
 function isErrorState() {
-  return display.value === "Erro";
+  return ERROR_MESSAGES.includes(display.value);
 }
 function lastChar() {
   return display.value.slice(-1);
@@ -28,9 +29,14 @@ buttons.forEach((button) => {
       display.value = "";
     } else if (value === "=") {
       try {
-        display.value = eval(display.value);
+        const result = eval(display.value);
+        if (!isFinite(result)) {
+          display.value = "Divisão por zero";
+        } else {
+          display.value = result;
+        }
       } catch {
-        display.value = "Erro";
+        display.value = "Erro de sintaxe";
       }
     } else if (value === "⌫") {
       display.value = display.value.slice(0, -1);
@@ -38,6 +44,12 @@ buttons.forEach((button) => {
       if (isErrorState()) display.value = "";
 
       if ("+-*/".includes(value)) {
+        if ("+-*/".includes(lastChar()) && display.value !== "") {
+          if (lastChar() !== value) {
+            display.value = display.value.slice(0, -1) + value;
+          }
+          return;
+        }
         if (!canAddOperator(value)) return;
       } else if (value === ".") {
         if (!canAddDot()) return;
@@ -56,9 +68,14 @@ document.addEventListener("keydown", (event) => {
 
   if (key === "Enter") {
     try {
-      display.value = eval(display.value);
+      const result = eval(display.value);
+      if (!isFinite(result)) {
+        display.value = "Divisão por zero";
+      } else {
+        display.value = result;
+      }
     } catch {
-      display.value = "Erro";
+      display.value = "Erro de sintaxe";
     }
   } else if (key === "Backspace") {
     display.value = display.value.slice(0, -1);
@@ -68,6 +85,12 @@ document.addEventListener("keydown", (event) => {
     if (isErrorState()) display.value = "";
 
     if ("+-*/".includes(key)) {
+      if ("+-*/".includes(lastChar()) && display.value !== "") {
+        if (lastChar() !== key) {
+          display.value = display.value.slice(0, -1) + key;
+        }
+        return;
+      }
       if (!canAddOperator(key)) return;
     } else if (key === ".") {
       if (!canAddDot()) return;
