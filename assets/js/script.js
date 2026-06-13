@@ -1,6 +1,7 @@
 const display = document.getElementById("display");
 const buttons = document.querySelectorAll("button");
-
+const historyEl = document.getElementById("history");
+let history = [];
 buttons.forEach((button) => {
   button.addEventListener("click", () => {
     const value = button.textContent;
@@ -9,7 +10,10 @@ buttons.forEach((button) => {
       display.value = "";
     } else if (value === "=") {
       try {
-        display.value = calculate(display.value);
+        const expression = display.value;
+        const result = calculate(expression);
+        display.value = result;
+        addHistory(expression, result);
       } catch (error) {
         display.value =
           error.message === "Divisão por zero"
@@ -21,14 +25,14 @@ buttons.forEach((button) => {
     } else if (value === "%") {
       if (isErrorState(display.value)) return;
       const match = display.value.match(/(\d+\.?\d*)$/);
-       if (match) {
-         const lastNum = parseFloat(match[1]);
-         display.value =
-           display.value.slice(0, -match[1].length) + lastNum / 100;
-       }
-     } else if (value === "±") {
-       display.value = toggleSign(display.value);
-     } else {
+      if (match) {
+        const lastNum = parseFloat(match[1]);
+        display.value =
+          display.value.slice(0, -match[1].length) + lastNum / 100;
+      }
+    } else if (value === "±") {
+      display.value = toggleSign(display.value);
+    } else {
       if (isErrorState(display.value)) display.value = "";
 
       if ("+-*/".includes(value)) {
@@ -50,19 +54,21 @@ buttons.forEach((button) => {
     }
   });
 });
-
 document.addEventListener("keydown", (event) => {
   const key = event.key;
 
-  if (key === "Enter") {
-    try {
-      display.value = calculate(display.value);
-    } catch (error) {
-      display.value =
-        error.message === "Divisão por zero"
-          ? "Divisão por zero"
-          : "Erro de sintaxe";
-    }
+    if (key === "Enter") {
+      try {
+        const expression = display.value;
+        const result = calculate(expression);
+        display.value = result;
+        addHistory(expression, result);
+      } catch (error) {
+        display.value =
+          error.message === "Divisão por zero"
+            ? "Divisão por zero"
+            : "Erro de sintaxe";
+      }
   } else if (key === "Backspace") {
     display.value = display.value.slice(0, -1);
   } else if (key === " ") {
@@ -96,3 +102,19 @@ document.addEventListener("keydown", (event) => {
     display.value += key;
   }
 });
+
+function renderHistory() {
+  historyEl.innerHTML = history
+    .map(
+      (item) =>
+        `<p><span class="hist-expr">${item.expression} =</span><span class="hist-result">${item.result}</span></p>`,
+    )
+    .join("");
+  historyEl.scrollTop = historyEl.scrollHeight;
+}
+
+function addHistory(expression, result) {
+  history.push({ expression, result });
+  if (history.length > 10) history.shift();
+  renderHistory();
+}

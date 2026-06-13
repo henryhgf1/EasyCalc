@@ -97,3 +97,33 @@ button.backspace {
 button.sign {
   background: #3a3a3c;
 }
+
+.history {
+  min-height: 50px;
+  max-height: 100px;
+  overflow: auto;
+  margin-bottom: 10px;
+  padding: 5px 10px;
+  background: #0d0d0d;
+  border-radius: 8px;
+  font-family: "SF Mono", "Fira Code", "Consolas", monospace;
+  font-size: 0.8rem;
+}
+.history p {
+  display: flex;
+  justify-content: space-between;
+  padding: 2px 0;
+  border-bottom: 1px solid #1a1a1a;
+}
+
+.history p:last-child {
+  border-bottom: none;
+}
+
+.history .hist-expr {
+  color: #666;
+}
+
+.history .hist-result {
+  color: #00ff88;
+}
