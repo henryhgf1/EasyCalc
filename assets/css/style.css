@@ -10,7 +10,8 @@ body {
   justify-content: center;
   align-items: center;
   min-height: 100vh;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-family:
+    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
 }
 
 .calculator {
@@ -18,7 +19,9 @@ body {
   background: #1c1c1e;
   padding: 20px;
   border-radius: 20px;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.05);
+  box-shadow:
+    0 20px 60px rgba(0, 0, 0, 0.5),
+    0 0 0 1px rgba(255, 255, 255, 0.05);
 }
 
 #display {
@@ -29,7 +32,7 @@ body {
   border-radius: 12px;
   padding: 10px 20px;
   font-size: 2.2rem;
-  font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+  font-family: "SF Mono", "Fira Code", "Consolas", monospace;
   text-align: right;
   outline: none;
   background: #0d0d0d;
@@ -73,7 +76,6 @@ button.operator:active {
 button.equals {
   background: #0a84ff;
   font-size: 1.6rem;
-  grid-column: 3 / 5;
 }
 
 button.equals:active {
@@ -89,5 +91,9 @@ button.clear:active {
 }
 
 button.backspace {
+  background: #3a3a3c;
+}
+
+button.sign {
   background: #3a3a3c;
 }

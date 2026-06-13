@@ -20,6 +20,26 @@ function canAddDot(displayValue) {
   const lastNum = parts[parts.length - 1];
   return !lastNum.includes(".");
 }
+function toggleSign(str) {
+  if (str === "" || isErrorState(str)) return str;
+
+  const match = str.match(/(-?\d+\.?\d*)$/);
+  if (!match) return str;
+
+  const lastNum = match[1];
+  const before = str.slice(0, -lastNum.length);
+
+  if (lastNum.startsWith("-")) {
+    return before + lastNum.slice(1);
+  }
+
+  const opMatch = before.match(/([+\-*/])$/);
+  if (opMatch && opMatch[1] !== "*" && opMatch[1] !== "/") {
+    const op = opMatch[1];
+    return before.slice(0, -1) + (op === "+" ? "-" : "+") + lastNum;
+  }
+  return before + "-" + lastNum;
+}
 
 function calculate(expression) {
   {
