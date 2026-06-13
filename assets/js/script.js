@@ -1,9 +1,10 @@
 const display = document.getElementById("display");
 const buttons = document.querySelectorAll("button");
 
-// function isErrorState() {
-//   return display.value === "Erro";
-// }
+const ERROR_MESSAGES = ["Erro", "Divisão por zero", "Erro de sintaxe"];
+function isErrorState() {
+  return ERROR_MESSAGES.includes(display.value);
+}
 function lastChar() {
   return display.value.slice(-1);
 }
@@ -27,11 +28,16 @@ buttons.forEach((button) => {
     if (value === "C") {
       display.value = "";
     } else if (value === "=") {
-      // try {
-      //   display.value = eval(display.value);
-      // } catch {
-      //   display.value = "Erro";
-      // }
+      try {
+        const result = eval(display.value);
+        if (!isFinite(result)) {
+          display.value = "Divisão por zero";
+        } else {
+          display.value = result;
+        }
+      } catch {
+        display.value = "Erro de sintaxe";
+      }
     } else if (value === "⌫") {
       display.value = display.value.slice(0, -1);
     } else {
@@ -61,11 +67,16 @@ document.addEventListener("keydown", (event) => {
   const key = event.key;
 
   if (key === "Enter") {
-    // try {
-    //   display.value = eval(display.value);
-    // } catch {
-    //   display.value = "Erro";
-    // }
+    try {
+      const result = eval(display.value);
+      if (!isFinite(result)) {
+        display.value = "Divisão por zero";
+      } else {
+        display.value = result;
+      }
+    } catch {
+      display.value = "Erro de sintaxe";
+    }
   } else if (key === "Backspace") {
     display.value = display.value.slice(0, -1);
   } else if (key === " ") {
