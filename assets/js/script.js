@@ -1,9 +1,9 @@
 const display = document.getElementById("display");
 const buttons = document.querySelectorAll("button");
 
-function isErrorState() {
-  return display.value === "Erro";
-}
+// function isErrorState() {
+//   return display.value === "Erro";
+// }
 function lastChar() {
   return display.value.slice(-1);
 }
@@ -27,17 +27,23 @@ buttons.forEach((button) => {
     if (value === "C") {
       display.value = "";
     } else if (value === "=") {
-      try {
-        display.value = eval(display.value);
-      } catch {
-        display.value = "Erro";
-      }
+      // try {
+      //   display.value = eval(display.value);
+      // } catch {
+      //   display.value = "Erro";
+      // }
     } else if (value === "⌫") {
       display.value = display.value.slice(0, -1);
     } else {
       if (isErrorState()) display.value = "";
 
       if ("+-*/".includes(value)) {
+        if ("+-*/".includes(lastChar()) && display.value !== "") {
+          if (lastChar() !== value) {
+            display.value = display.value.slice(0, -1) + value;
+          }
+          return;
+        }
         if (!canAddOperator(value)) return;
       } else if (value === ".") {
         if (!canAddDot()) return;
@@ -55,11 +61,11 @@ document.addEventListener("keydown", (event) => {
   const key = event.key;
 
   if (key === "Enter") {
-    try {
-      display.value = eval(display.value);
-    } catch {
-      display.value = "Erro";
-    }
+    // try {
+    //   display.value = eval(display.value);
+    // } catch {
+    //   display.value = "Erro";
+    // }
   } else if (key === "Backspace") {
     display.value = display.value.slice(0, -1);
   } else if (key === " ") {
@@ -68,6 +74,12 @@ document.addEventListener("keydown", (event) => {
     if (isErrorState()) display.value = "";
 
     if ("+-*/".includes(key)) {
+      if ("+-*/".includes(lastChar()) && display.value !== "") {
+        if (lastChar() !== key) {
+          display.value = display.value.slice(0, -1) + key;
+        }
+        return;
+      }
       if (!canAddOperator(key)) return;
     } else if (key === ".") {
       if (!canAddDot()) return;
