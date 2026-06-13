@@ -21,12 +21,14 @@ buttons.forEach((button) => {
     } else if (value === "%") {
       if (isErrorState(display.value)) return;
       const match = display.value.match(/(\d+\.?\d*)$/);
-      if (match) {
-        const lastNum = parseFloat(match[1]);
-        display.value =
-          display.value.slice(0, -match[1].length) + lastNum / 100;
-      }
-    } else {
+       if (match) {
+         const lastNum = parseFloat(match[1]);
+         display.value =
+           display.value.slice(0, -match[1].length) + lastNum / 100;
+       }
+     } else if (value === "±") {
+       display.value = toggleSign(display.value);
+     } else {
       if (isErrorState(display.value)) display.value = "";
 
       if ("+-*/".includes(value)) {
