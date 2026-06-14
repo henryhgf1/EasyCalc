@@ -149,15 +149,23 @@ button.sign {
 }
 
 .hist-btn {
-  background: none;
+  background: transparent;
   border: none;
   color: #555;
   cursor: pointer;
   font-size: 0.8rem;
   padding: 2px 6px;
   border-radius: 4px;
-  transition: all 0.1s ease;
   height: auto;
+  min-height: 0;
+  width: auto;
+  box-shadow: none;
+  transform: none;
+  transition: all 0.1s ease;
+}
+
+.hist-btn:active {
+  transform: none;
   box-shadow: none;
 }
 

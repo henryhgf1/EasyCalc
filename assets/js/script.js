@@ -1,8 +1,9 @@
 const display = document.getElementById("display");
-const buttons = document.querySelectorAll("button");
+const buttons = document.querySelectorAll("button:not(.hist-btn)");
 const historyEl = document.getElementById("history");
 let history = [];
 let historyVisible = true;
+let justCalculated = false;
 
 document.getElementById("histToggle").addEventListener("click", () => {
   historyVisible = !historyVisible;
@@ -22,11 +23,13 @@ buttons.forEach((button) => {
 
     if (value === "C") {
       display.value = "";
+      justCalculated = false;
     } else if (value === "=") {
       try {
         const expression = display.value;
         const result = calculate(expression);
         display.value = result;
+        justCalculated = true;
         addHistory(expression, result);
       } catch (error) {
         display.value =
@@ -48,6 +51,10 @@ buttons.forEach((button) => {
       display.value = toggleSign(display.value);
     } else {
       if (isErrorState(display.value)) display.value = "";
+      if (justCalculated && !"+-*/".includes(value)) {
+        display.value = "";
+        justCalculated = false;
+      }
 
       if ("+-*/".includes(value)) {
         if ("+-*/".includes(lastChar(display.value)) && display.value !== "") {
@@ -69,13 +76,38 @@ buttons.forEach((button) => {
   });
 });
 document.addEventListener("keydown", (event) => {
-  const key = event.key;
+  let key = event.key;
+  if (event.code.startsWith("Numpad")) {
+    const NUMPAD_MAP = {
+      Numpad0: "0",
+      Numpad1: "1",
+      Numpad2: "2",
+      Numpad3: "3",
+      Numpad4: "4",
+      Numpad5: "5",
+      Numpad6: "6",
+      Numpad7: "7",
+      Numpad8: "8",
+      Numpad9: "9",
+      NumpadAdd: "+",
+      NumpadSubtract: "-",
+      NumpadMultiply: "*",
+      NumpadDivide: "/",
+      NumpadDecimal: ".",
+      NumpadEnter: "Enter",
+    };
+    if (NUMPAD_MAP[event.code]) {
+      key = NUMPAD_MAP[event.code];
+    }
+  }
 
   if (key === "Enter") {
+    event.preventDefault();
     try {
       const expression = display.value;
       const result = calculate(expression);
       display.value = result;
+      justCalculated = true;
       addHistory(expression, result);
     } catch (error) {
       display.value =
@@ -84,11 +116,19 @@ document.addEventListener("keydown", (event) => {
           : "Erro de sintaxe";
     }
   } else if (key === "Backspace") {
+    event.preventDefault();
     display.value = display.value.slice(0, -1);
   } else if (key === " ") {
+    event.preventDefault();
     display.value = "";
+    justCalculated = false;
   } else if (!isNaN(key) || "+-*/.=%".includes(key)) {
+    event.preventDefault();
     if (isErrorState(display.value)) display.value = "";
+    if (justCalculated && !"+-*/".includes(key)) {
+      display.value = "";
+      justCalculated = false;
+    }
 
     if ("+-*/".includes(key)) {
       if ("+-*/".includes(lastChar(display.value)) && display.value !== "") {
