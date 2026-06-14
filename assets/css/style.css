@@ -127,3 +127,45 @@ button.sign {
 .history .hist-result {
   color: #00ff88;
 }
+.history-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 4px;
+  padding-bottom: 4px;
+  border-bottom: 1px solid #1a1a1a;
+}
+
+.history-title {
+  color: #666;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.history-controls {
+  display: flex;
+  gap: 4px;
+}
+
+.hist-btn {
+  background: none;
+  border: none;
+  color: #555;
+  cursor: pointer;
+  font-size: 0.8rem;
+  padding: 2px 6px;
+  border-radius: 4px;
+  transition: all 0.1s ease;
+  height: auto;
+  box-shadow: none;
+}
+
+.hist-btn:hover {
+  color: #fff;
+  background: #2c2c2e;
+}
+
+.history.collapsed .history-entries {
+  display: none;
+}
