@@ -2,6 +2,20 @@ const display = document.getElementById("display");
 const buttons = document.querySelectorAll("button");
 const historyEl = document.getElementById("history");
 let history = [];
+let historyVisible = true;
+
+document.getElementById("histToggle").addEventListener("click", () => {
+  historyVisible = !historyVisible;
+  document.getElementById("history").classList.toggle("collapsed");
+  document.getElementById("histToggle").textContent = historyVisible
+    ? "⌃"
+    : "⌄";
+});
+
+document.getElementById("histClear").addEventListener("click", () => {
+  history = [];
+  renderHistory();
+});
 buttons.forEach((button) => {
   button.addEventListener("click", () => {
     const value = button.textContent;
@@ -57,18 +71,18 @@ buttons.forEach((button) => {
 document.addEventListener("keydown", (event) => {
   const key = event.key;
 
-    if (key === "Enter") {
-      try {
-        const expression = display.value;
-        const result = calculate(expression);
-        display.value = result;
-        addHistory(expression, result);
-      } catch (error) {
-        display.value =
-          error.message === "Divisão por zero"
-            ? "Divisão por zero"
-            : "Erro de sintaxe";
-      }
+  if (key === "Enter") {
+    try {
+      const expression = display.value;
+      const result = calculate(expression);
+      display.value = result;
+      addHistory(expression, result);
+    } catch (error) {
+      display.value =
+        error.message === "Divisão por zero"
+          ? "Divisão por zero"
+          : "Erro de sintaxe";
+    }
   } else if (key === "Backspace") {
     display.value = display.value.slice(0, -1);
   } else if (key === " ") {
@@ -104,17 +118,23 @@ document.addEventListener("keydown", (event) => {
 });
 
 function renderHistory() {
-  historyEl.innerHTML = history
+  const entries = document.getElementById("historyEntries");
+  entries.innerHTML = history
     .map(
       (item) =>
         `<p><span class="hist-expr">${item.expression} =</span><span class="hist-result">${item.result}</span></p>`,
     )
     .join("");
-  historyEl.scrollTop = historyEl.scrollHeight;
+  entries.scrollTop = entries.scrollHeight;
 }
 
 function addHistory(expression, result) {
   history.push({ expression, result });
   if (history.length > 10) history.shift();
+  if (!historyVisible) {
+    historyVisible = true;
+    document.getElementById("history").classList.remove("collapsed");
+    document.getElementById("histToggle").textContent = "⌃";
+  }
   renderHistory();
 }

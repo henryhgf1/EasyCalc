@@ -9,7 +9,16 @@
   </head>
   <body>
     <div class="calculator">
-      <div class="history" id="history"></div>
+      <div class="history" id="history">
+        <div class="history-header">
+          <span class="history-title">Histórico</span>
+          <div class="history-controls">
+            <button type="button" class="hist-btn" id="histToggle">⌃</button>
+            <button type="button" class="hist-btn" id="histClear">✕</button>
+          </div>
+        </div>
+        <div class="history-entries" id="historyEntries"></div>
+      </div>
       <input type="text" id="display" readonly inputmode="numeric" />
 
       <div class="buttons">
