@@ -74,6 +74,7 @@ buttons.forEach((button) => {
       display.value += value;
     }
   });
+  adjustFontSize();
 });
 document.addEventListener("keydown", (event) => {
   let key = event.key;
@@ -155,6 +156,7 @@ document.addEventListener("keydown", (event) => {
     }
     display.value += key;
   }
+  adjustFontSize();
 });
 
 function renderHistory() {
@@ -177,4 +179,14 @@ function addHistory(expression, result) {
     document.getElementById("histToggle").textContent = "⌃";
   }
   renderHistory();
+}
+function adjustFontSize() {
+  requestAnimationFrame(() => {
+    let size = 2.2;
+    display.style.fontSize = size + "rem";
+    while (display.scrollWidth > display.clientWidth && size > 0.8) {
+      size -= 0.1;
+      display.style.fontSize = size + "rem";
+    }
+  });
 }
