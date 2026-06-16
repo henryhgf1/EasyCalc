@@ -1,6 +1,27 @@
 const display = document.getElementById("display");
-const buttons = document.querySelectorAll("button:not(.hist-btn)");
+const buttons = document.querySelectorAll("button:not(.hist-btn):not(.theme-btn)");
 const historyEl = document.getElementById("history");
+const themeToggle = document.getElementById("themeToggle");
+
+function applyTheme(theme) {
+  document
+    .querySelector(".calculator")
+    .classList.toggle("light", theme === "light");
+  themeToggle.textContent = theme === "light" ? "🌙" : "☀️";
+  localStorage.setItem("theme", theme);
+}
+
+const savedTheme = localStorage.getItem("theme") || "dark";
+applyTheme(savedTheme);
+
+themeToggle.addEventListener("click", () => {
+  const current = document
+    .querySelector(".calculator")
+    .classList.contains("light")
+    ? "light"
+    : "dark";
+  applyTheme(current === "light" ? "dark" : "light");
+});
 let history = [];
 let historyVisible = true;
 let justCalculated = false;
