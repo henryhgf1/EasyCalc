@@ -1,5 +1,5 @@
 const display = document.getElementById("display");
-const buttons = document.querySelectorAll("button:not(.hist-btn):not(.theme-btn)");
+const buttons = document.querySelectorAll("button:not(.hist-btn):not(.theme-btn):not(.mem-btn)");
 const historyEl = document.getElementById("history");
 const themeToggle = document.getElementById("themeToggle");
 
@@ -25,6 +25,7 @@ themeToggle.addEventListener("click", () => {
 let history = [];
 let historyVisible = true;
 let justCalculated = false;
+let memory = null;
 
 document.getElementById("histToggle").addEventListener("click", () => {
   historyVisible = !historyVisible;
@@ -33,6 +34,37 @@ document.getElementById("histToggle").addEventListener("click", () => {
     ? "⌃"
     : "⌄";
 });
+
+document.getElementById("memMC").addEventListener("click", () => {
+  memory = null;
+  document.querySelectorAll(".mem-btn").forEach(b => b.classList.remove("has-memory"));
+});
+
+document.getElementById("memMR").addEventListener("click", () => {
+  if (memory !== null) {
+    if (isErrorState(display.value)) display.value = "";
+    display.value += memory;
+    justCalculated = false;
+  }
+});
+
+document.getElementById("memMplus").addEventListener("click", () => {
+  const val = parseFloat(display.value);
+  if (!isNaN(val)) {
+    memory = (memory || 0) + val;
+    document.querySelectorAll(".mem-btn").forEach(b => b.classList.add("has-memory"));
+  }
+});
+
+document.getElementById("memMminus").addEventListener("click", () => {
+  const val = parseFloat(display.value);
+  if (!isNaN(val)) {
+    memory = (memory || 0) - val;
+    document.querySelectorAll(".mem-btn").forEach(b => b.classList.add("has-memory"));
+  }
+});
+
+document.getElementById("histClear")
 
 document.getElementById("histClear").addEventListener("click", () => {
   history = [];

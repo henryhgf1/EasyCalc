@@ -47,7 +47,8 @@ body {
 
 .calculator {
   position: relative;
-  width: 340px;
+  width: 100%;
+  max-width: 400px;
   background: var(--bg-calc);
   padding: 20px;
   border-radius: 20px;
@@ -101,6 +102,43 @@ body {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 10px;
+}
+
+.memory-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.mem-btn {
+  background: transparent;
+  border: 1px solid var(--border-calc);
+  border-radius: 8px;
+  color: #666;
+  font-size: 0.75rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  height: auto;
+  padding: 6px;
+  box-shadow: none;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  line-height: 1;
+}
+
+.mem-btn:hover {
+  color: var(--text-btn);
+  background: var(--bg-btn);
+}
+
+.mem-btn:active {
+  transform: scale(0.95);
+}
+
+.mem-btn.has-memory {
+  color: var(--text-btn);
 }
 
 button {
@@ -224,4 +262,72 @@ button.sign {
 
 .history.collapsed .history-entries {
   display: none;
+}
+
+@media (max-width: 480px) {
+  .calculator {
+    padding: 16px;
+    border-radius: 16px;
+    margin: 10px;
+  }
+
+  #display {
+    height: 65px;
+    font-size: 1.6rem;
+    padding: 8px 16px;
+  }
+
+  button {
+    height: 56px;
+    font-size: 1.2rem;
+    border-radius: 10px;
+  }
+
+  button.operator,
+  button.equals {
+    font-size: 1.4rem;
+  }
+
+  .buttons,
+  .memory-row {
+    gap: 8px;
+  }
+
+  .memory-row {
+    gap: 6px;
+  }
+
+  .mem-btn {
+    font-size: 0.65rem;
+    padding: 4px;
+  }
+
+  .theme-btn {
+    top: 10px;
+    right: 10px;
+    font-size: 1.2rem;
+  }
+
+  .history {
+    max-height: 80px;
+    min-height: 40px;
+    font-size: 0.7rem;
+  }
+}
+
+@media (max-width: 360px) {
+  button {
+    height: 48px;
+    font-size: 1rem;
+    border-radius: 8px;
+  }
+
+  #display {
+    height: 55px;
+    font-size: 1.3rem;
+  }
+
+  .calculator {
+    padding: 12px;
+  }
 }
